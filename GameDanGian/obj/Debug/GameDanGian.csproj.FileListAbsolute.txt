@@ -1,0 +1,10 @@
+C:\Users\LAptop\source\repos\GameDanGian\GameDanGian\obj\Debug\GameDanGian.csprojAssemblyReference.cache
+C:\Users\LAptop\source\repos\GameDanGian\GameDanGian\obj\Debug\GameDanGian.Properties.Resources.resources
+C:\Users\LAptop\source\repos\GameDanGian\GameDanGian\obj\Debug\GameDanGian.csproj.GenerateResource.cache
+C:\Users\LAptop\source\repos\GameDanGian\GameDanGian\bin\Debug\GameDanGian.exe.config
+C:\Users\LAptop\source\repos\GameDanGian\GameDanGian\bin\Debug\GameDanGian.exe
+C:\Users\LAptop\source\repos\GameDanGian\GameDanGian\bin\Debug\GameDanGian.pdb
+C:\Users\LAptop\source\repos\GameDanGian\GameDanGian\obj\Debug\GameDanGian.exe
+C:\Users\LAptop\source\repos\GameDanGian\GameDanGian\obj\Debug\GameDanGian.pdb
+C:\Users\LAptop\source\repos\GameDanGian\GameDanGian\obj\Debug\GameDanGian.Form1.resources
+C:\Users\LAptop\source\repos\GameDanGian\GameDanGian\obj\Debug\GameDanGian.MessengerForm.resources
