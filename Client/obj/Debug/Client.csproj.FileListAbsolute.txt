@@ -1,0 +1,9 @@
+C:\Users\LAptop\source\repos\GameDanGian\Client\obj\Debug\Client.MessengerForm.resources
+C:\Users\LAptop\source\repos\GameDanGian\Client\obj\Debug\Client.Properties.Resources.resources
+C:\Users\LAptop\source\repos\GameDanGian\Client\obj\Debug\Client.csproj.GenerateResource.cache
+C:\Users\LAptop\source\repos\GameDanGian\Client\bin\Debug\Client.exe.config
+C:\Users\LAptop\source\repos\GameDanGian\Client\bin\Debug\Client.exe
+C:\Users\LAptop\source\repos\GameDanGian\Client\bin\Debug\Client.pdb
+C:\Users\LAptop\source\repos\GameDanGian\Client\obj\Debug\Client.exe
+C:\Users\LAptop\source\repos\GameDanGian\Client\obj\Debug\Client.pdb
+C:\Users\LAptop\source\repos\GameDanGian\Client\obj\Debug\Client.ClientForm.resources

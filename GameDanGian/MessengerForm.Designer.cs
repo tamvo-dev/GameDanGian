@@ -1,4 +1,4 @@
-﻿namespace GameDanGian
+﻿namespace Server
 {
     partial class MessengerForm
     {

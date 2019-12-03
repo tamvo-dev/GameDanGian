@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameDanGian.Properties
+namespace Server.Properties
 {
 
 

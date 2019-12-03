@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
-namespace GameDanGian
+namespace Server
 {
     // Điều khiển logic game
     class GameManager
     {
         public const int MAX = 12;
         // Có hai người chơi
-        Player playerOne;
-        Player playerTwo;
+        public Player playerOne;
+        public Player playerTwo;
 
         // Hai quân chúa đã bị mất chưa
         bool isLeft = false;
@@ -24,8 +25,10 @@ namespace GameDanGian
         // 11 5 Hai ô chúa
         public int[] arr;
 
-        public GameManager()
+        private UpDateUI upDateUI;
+        public GameManager(UpDateUI updateUI)
         {
+            this.upDateUI = updateUI;
             playerOne = new Player();
             playerOne.name = "Player 1";
             playerTwo = new Player();
@@ -95,195 +98,142 @@ namespace GameDanGian
             return index;
         }
 
+        // Đánh tại một vị trí nhất định ngược theo chiều đồng hồ
+        // Trả về số điểm của người chơi đã ăn được
+        // Hoặc trả về 0 nếu không thể ăn
+        private int runLeft(int index)
+        {
+            bool isPlay = true;
+            int result = 0;
+
+            do
+            {
+                // Tiến hành rải quân
+                int num = arr[index];
+                arr[index] = 0;
+                int start = index - 1;
+                start = formatIndex(start);
+
+                while (num > 0)
+                {
+                    num--;
+                    arr[start]++;
+                    start--;
+                    start = formatIndex(start);
+                    upDateUI.upDateUI();
+                    upDateUI.delay();
+                }
+
+                if(arr[start] == 0)
+                {
+                    start--;
+                    start = formatIndex(start);
+                    result = arr[start];
+                    arr[start] = 0;
+                    return result;
+                }
+                else
+                {
+                    if(start == 5 || start == 11)
+                    {
+                        // Kết thúc tại ô quan thì kết thúc
+                        return 0;
+                    }
+                    else
+                    {
+                        index = start;
+                    }
+                }
+
+            } while (isPlay);
+
+            return result;
+        }
+
+
+        // Đánh tại một vị trí nhất định theo chiều đồng hồ
+        // Trả về số điểm của người chơi đã ăn được
+        // Hoặc trả về 0 nếu không thể ăn
+        private int runRight(int index)
+        {
+            bool isPlay = true;
+            int result = 0;
+
+            do
+            {
+                // Tiến hành rải quân
+                int num = arr[index];
+                arr[index] = 0;
+                int start = index + 1;
+                start = formatIndex(start);
+
+                while (num > 0)
+                {
+                    num--;
+                    arr[start]++;
+                    start++;
+                    start = formatIndex(start);
+                    upDateUI.upDateUI();
+                    upDateUI.delay();
+                }
+
+                if (arr[start] == 0)
+                {
+                    start++;
+                    start = formatIndex(start);
+                    result = arr[start];
+                    arr[start] = 0;
+                    return result;
+                }
+                else
+                {
+                    if (start == 5 || start == 11)
+                    {
+                        // Kết thúc tại ô quan thì kết thúc
+                        return 0;
+                    }
+                    else
+                    {
+                        index = start;
+                    }
+                }
+
+            } while (isPlay);
+
+            return result;
+        }
+
         // Người chơi một đánh left tại vị trí index
         public void playerOneLeft(int index)
         {
-            int num = arr[index];
-            arr[index] = 0;
-
-            // Tiến hành rải quân
-            int start = index - 1;
-            start = formatIndex(start);
-               
-            while(num > 0)
-            {
-                num--;
-                arr[start]++;
-                start--;
-                start = formatIndex(start);
-            }
-
-            // Sau khi rải xong quân thì sét xem tại vị trí đó có ăn được, đánh tiếp hay mất lượt
-            if( arr[start] == 0)
-            {
-                start--;
-                start = formatIndex(start);
-
-                if (start == 5)
-                {
-                    isRight = true;
-                }
-                else if (start == 11)
-                {
-                    isLeft = true;
-                }
-                playerOne.score += arr[start];
-                arr[start] = 0;
-                return;
-            }
-            else
-            {
-                // arr[start] != 0
-                if (isPlayerOne(start))
-                {
-                    // Nếu tại vị trí này là của player one thì cho đánh tiếp
-                    playerOneLeft(start);
-                }
-                // Không phải thì kết thúc lượt
-            }
+            playerOne.score += runLeft(index);
+            overPlayerOne();
+            overPlayerTwo();
         }
 
         // Người chơi một đánh right tại vị trí index
         public void playerOneRight(int index)
         {
-            int num = arr[index];
-            arr[index] = 0;
-
-            // Tiến hành rải quân
-            int start = index + 1;
-
-            while (num > 0)
-            {
-                num--;
-                arr[start]++;
-                start++;
-                start = formatIndex(start);
-            }
-
-            // Sau khi rải xong quân thì sét xem tại vị trí đó có ăn được, đánh tiếp hay mất lượt
-            if (arr[start] == 0)
-            {
-                start++;
-                start = formatIndex(start);
-
-                if (start == 5)
-                {
-                    isRight = true;
-                }
-                else if (start == 11)
-                {
-                    isLeft = true;
-                }
-                playerOne.score += arr[start];
-                arr[start] = 0;
-                return;
-            }
-            else
-            {
-                // arr[start] != 0
-                if (isPlayerOne(start))
-                {
-                    // Nếu tại vị trí này là của player one thì cho đánh tiếp
-                    playerOneRight(start);
-                }
-                // Không phải thì kết thúc lượt
-            }
+            playerOne.score += runRight(index);
+            overPlayerOne();
+            overPlayerTwo();
         }
 
         // Người chơi hai đánh left tại vị trí index
+       
         public void playerTwoLeft (int index)
         {
-            int num = arr[index];
-            arr[index] = 0;
-
-            // Tiến hành rải quân
-            int start = index + 1;
-            start = formatIndex(start);
-
-            while (num > 0)
-            {
-                num--;
-                arr[start]++;
-                start++;
-                start = formatIndex(start);
-            }
-
-            // Sau khi rải xong quân thì sét xem tại vị trí đó có ăn được, đánh tiếp hay mất lượt
-            if (arr[start] == 0)
-            {
-                start++;
-                start = formatIndex(start);
-
-                if (start == 5)
-                {
-                    isRight = true;
-                }
-                else if (start == 11)
-                {
-                    isLeft = true;
-                }
-                playerTwo.score += arr[start];
-                arr[start] = 0;
-                return;
-            }
-            else
-            {
-                // arr[start] != 0
-                if (isPlayerTwo(start))
-                {
-                    // Nếu tại vị trí này là của player one thì cho đánh tiếp
-                    playerTwoLeft(start);
-                }
-                // Không phải thì kết thúc lượt
-            }
+            playerTwo.score += runRight(index);
+            overPlayerTwo();
+            overPlayerOne();
         }
 
         // Người chơi hai đánh right tại vị trí index
         public void playerTwoRight(int index)
         {
-            int num = arr[index];
-            arr[index] = 0;
-
-            // Tiến hành rải quân
-            int start = index - 1;
-            start = formatIndex(start);
-
-            while (num > 0)
-            {
-                num--;
-                arr[start]++;
-                start--;
-                start = formatIndex(start);
-            }
-
-            // Sau khi rải xong quân thì sét xem tại vị trí đó có ăn được, đánh tiếp hay mất lượt
-            if (arr[start] == 0)
-            {
-                start--;
-                start = formatIndex(start);
-
-                if(start == 5)
-                {
-                    isRight = true;
-                }
-                else if(start == 11)
-                {
-                    isLeft = true;
-                }
-                playerTwo.score += arr[start];
-                arr[start] = 0;
-                return;
-            }
-            else
-            {
-                // arr[start] != 0
-                if (isPlayerTwo(start))
-                {
-                    // Nếu tại vị trí này là của player one thì cho đánh tiếp
-                    playerTwoRight(start);
-                }
-                // Không phải thì kết thúc lượt
-            }
+            playerTwo.score += runLeft(index);
+            overPlayerTwo();
+            overPlayerOne();
         }
 
         // Kiểm tra xem người chơi one đã hết quân chưa, nếu hết thì phải rải lại
